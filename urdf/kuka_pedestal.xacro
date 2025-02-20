@@ -1,47 +1,11 @@
 <?xml version="1.0"?>
+
 <robot name="kuka_pedestal" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-<!-- <xacro:macro name="kuka_pedestal"> -->
-  <!-- Properties for the mesh and dimensions -->
-  <xacro:property name="meshfile" value="package://pedestals_description/meshes/visual/kuka_pedestal.stl" />
-  <xacro:property name="colladafile" value="package://pedestals_description/meshes/collision/kuka_pedestal.dae" />
-  <xacro:property name="meshscale" value="1 1 1" />
-  <!-- Adjust this value to match the actual height of the pedestal -->
-  <xacro:property name="pedestalheight" value="0.83" />
-  <xacro:property name="pedestalside" value="0.41" />
+  <xacro:include filename="$(find pedestals_description)/urdf/kuka_pedestal_description.xacro" />
+  <!-- <xacro:include filename="$(find lbr_description)/urdf/iiwa14/iiwa14.xacro" /> -->
 
-  <!-- Base frame: the mesh is visualized here at ground level -->
-  <link name="pedestal_base_frame">
-    <visual>
-      <geometry>
-      <mesh filename="${meshfile}" scale="${meshscale}"/> 
-      </geometry>
-      <material name="vention_metal_blue">
-        <color rgba="0.16 0.39 0.47 1.0"/>
-      </material>
-    </visual>
-    <collision>
-      <geometry>
-      <!-- <mesh filename="${colladafile}" scale="${meshscale}"/> -->
-      <box size="${pedestalside} ${pedestalside} ${pedestalheight}"/>
-      </geometry>
-      <origin xyz="0 0 ${pedestalheight/2}" rpy="0 0 0"/>
-    </collision>
-    <!-- Optionally, include inertial properties if needed -->
-  </link>
+  <!-- Instantiate the pedestal -->
+  <xacro:kuka_pedestal />
 
-  <!-- Top frame: This is where you will attach the robot base -->
-  <link name="pedestal_top_frame">
-    <!-- You could add visuals or leave it empty if it’s only used as a reference frame -->
-  </link>
-
-  <!-- Fixed joint connecting the base and top frames -->
-  <joint name="pedestal_base_to_top" type="fixed">
-    <parent link="pedestal_base_frame"/>
-    <child link="pedestal_top_frame"/>
-    <!-- Translate along Z by the pedestal height -->
-    <origin xyz="0 0 ${pedestalheight}" rpy="0 0 0"/>
-  </joint>
-
-<!-- </xacro:macro> -->
 </robot>
